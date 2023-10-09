@@ -9,7 +9,7 @@ spring:
     include: mail
   jpa:
     hibernate:
-      ddl-auto: create
+#      ddl-auto: create
     properties:
       hibernate:
         default_batch_fetch_size: 100

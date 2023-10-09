@@ -6,8 +6,10 @@ import com.example.demo.dto.member.MemberGetDto;
 import com.example.demo.dto.member.MemberUpdateDto;
 import com.example.demo.reopsitory.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,15 +19,25 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+
     @Transactional
     @Override
-    public Long save(MemberAddDto member) {
+    public Member save(MemberAddDto member) {
+        log.info("memberAddDto(Service)={}", member);
         Member saveMember = Member.builder()
+                .loginId(member.getLoginId())
+                .password(passwordEncoder.encode(member.getPassword()))
                 .name(member.getName())
+                .email(member.getEmail())
+                .birth(member.getBirth())
+                .gender(member.getGender())
+                .role(member.getRole())
                 .address(member.getAddress()).build();
-        return saveMember.getId();
+        return memberRepository.save(saveMember);
     }
 
     @Override

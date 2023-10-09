@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header" >
+<head th:replace="fragments/header :: header">
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
         function sample6_execDaumPostcode() {
@@ -82,7 +82,7 @@
                     <button id="emailChk2" type="button" class="doubleChk">이메일인증</button><br>
                     <span class="point successEmailChk">이메일 입력후 인증번호 보내기를 해주십시오.</span>
                     <input type="hidden" id="emailDoubleChk"/>
-                </p>`
+                </p>
             </td>
         </tr>
         <div>
@@ -113,7 +113,7 @@
             성별
             <select th:field="*{gender}" class="form-select">
                 <option value="">==성별 선택==</option>
-                <option th:each="gender: ${genders}" th:value="${gender}" th:text="${gender.getDescription()}"></option>
+                <option th:each="gender: ${genders}" th:value="${gender}" th:text="${gender.getValue()}"></option>
             </select>
         </div>
         <div>

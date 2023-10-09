@@ -1,11 +1,14 @@
 package com.example.demo.web;
 
+import com.example.demo.domain.Gender;
 import com.example.demo.domain.Member;
 import com.example.demo.dto.member.MemberAddDto;
 import com.example.demo.dto.member.MemberGetDto;
 import com.example.demo.dto.member.MemberUpdateDto;
 import com.example.demo.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -17,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/members")
 @RequiredArgsConstructor
+@Slf4j
 public class MemberController {
     private final MemberService memberService;
 
@@ -39,12 +43,16 @@ public class MemberController {
         model.addAttribute("memberAddDto", new MemberAddDto());
         return "/members/add";
     }
+    @ModelAttribute("genders")
+    public Gender[] genders() {
+        return Gender.values();
+    }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute MemberAddDto memberAddDto, RedirectAttributes redirectAttributes) {
-        Long saveMemberId = memberService.save(memberAddDto);
-        redirectAttributes.addAttribute("memberId", saveMemberId);
-        return "redirect:/members/{memberId}";
+    public String add(@ModelAttribute MemberAddDto memberAddDto) {
+        Member saveMember = memberService.save(memberAddDto);
+        log.info("saveMember(Controller)= {} ", saveMember);
+        return "redirect:/";
     }
 
     @GetMapping("/{memberId}/edit")

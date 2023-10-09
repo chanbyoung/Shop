@@ -38,4 +38,19 @@ public class Member {
         this.name = memberUpdateDto.getName();
         this.address = memberUpdateDto.getAddress();
     }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", loginId='" + loginId + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", birth='" + birth + '\'' +
+                ", gender=" + gender +
+                ", role=" + role +
+                ", address=" + address +
+                '}';
+    }
 }

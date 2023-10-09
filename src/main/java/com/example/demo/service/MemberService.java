@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface MemberService {
-    Long save(MemberAddDto member);
+    Member save(MemberAddDto member);
 
     Member getMember(Long memberId);
 
