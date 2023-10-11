@@ -1,32 +1,32 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header" />
+<head th:replace="~{fragments/header :: header}" />
 <body>
 <div class="container">
-    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div th:replace="~{fragments/bodyHeader :: bodyHeader}" />
     <div>
         <table class="table table-striped">
             <thead>
             <tr>
                 <th>#</th>
                 <th>이름</th>
-                <th>도시</th>
+                <th>email</th>
+                <th>생년월일</th>
                 <th>주소</th>
-                <th>우편번호</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="member : ${members}">
-                <td th:text="${member.id}"></td>
+                <td><a href="member.html" th:href="@{/members/{memberId}(memberId=${member.id})}" th:text="${member.id}">이름</a></td>
                 <td th:text="${member.name}"></td>
-                <td th:text="${member.address?.city}"></td>
-                <td th:text="${member.address?.street}"></td>
-                <td th:text="${member.address?.zipcode}"></td>
+                <td th:text="${member.email}"></td>
+                <td th:text="${member.getBirth()}"></td>
+                <td th:text="${member.getAddress().getAddress()}"></td>
             </tr>
             </tbody>
         </table>
     </div>`
-    <div th:replace="fragments/footer :: footer" />
+    <div th:replace="~{fragments/footer :: footer}" />
 </div> <!-- /container -->
 </body>
 </html>

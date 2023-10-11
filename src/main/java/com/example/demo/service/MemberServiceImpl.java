@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Member;
+import com.example.demo.domain.Role;
 import com.example.demo.dto.member.MemberAddDto;
 import com.example.demo.dto.member.MemberGetDto;
 import com.example.demo.dto.member.MemberUpdateDto;
@@ -35,15 +36,15 @@ public class MemberServiceImpl implements MemberService{
                 .email(member.getEmail())
                 .birth(member.getBirth())
                 .gender(member.getGender())
-                .role(member.getRole())
+                .role(Role.USER)
                 .address(member.getAddress()).build();
         return memberRepository.save(saveMember);
     }
 
     @Override
-    public Member getMember(Long memberId) {
+    public MemberGetDto getMember(Long memberId) {
         Optional<Member> findMember = memberRepository.findById(memberId);
-        return findMember.get();
+        return convertToDTO(findMember.get());
     }
 
     @Override
@@ -55,7 +56,11 @@ public class MemberServiceImpl implements MemberService{
     private MemberGetDto convertToDTO(Member member) {
         return MemberGetDto.builder()
                 .id(member.getId())
+                .loginId(member.getLoginId())
                 .name(member.getName())
+                .email(member.getEmail())
+                .birth(member.getBirth())
+                .gender(member.getGender())
                 .address(member.getAddress())
                 .build();
     }

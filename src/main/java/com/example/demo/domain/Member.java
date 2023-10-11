@@ -36,6 +36,7 @@ public class Member {
 
     public void updateMember(MemberUpdateDto memberUpdateDto) {
         this.name = memberUpdateDto.getName();
+        this.birth = memberUpdateDto.getBirth();
         this.address = memberUpdateDto.getAddress();
     }
 

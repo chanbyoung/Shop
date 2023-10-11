@@ -33,7 +33,7 @@ public class MemberController {
 
     @GetMapping("/{memberId}")
     public String member(@PathVariable Long memberId, Model model) {
-        Member member = memberService.getMember(memberId);
+        MemberGetDto member = memberService.getMember(memberId);
         model.addAttribute("member", member);
         return "/members/member";
     }
@@ -57,7 +57,7 @@ public class MemberController {
 
     @GetMapping("/{memberId}/edit")
     public String editMember(@PathVariable Long memberId, Model model) {
-        Member member = memberService.getMember(memberId);
+        MemberGetDto member = memberService.getMember(memberId);
         model.addAttribute("member", member);
         return "/members/edit";
     }

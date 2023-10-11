@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header" />
+<head th:replace="~{fragments/header :: header}" />
 <body>
 <div class="container">
-    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div th:replace="~{fragments/bodyHeader :: bodyHeader}" />
     <div>
         <label for="loginId" th:text="#{label.member.loginId}">작성자 id</label>
         <input type="text" id="loginId" name="loginId" class="form-control" value="10000" th:value="${member.loginId}" readonly>
@@ -28,10 +28,36 @@
         <label for="address" th:text="#{label.member.address}">주소</label>
         <input type="text" id="address" name="address" class="form-control" value="10000" th:value="${member.address.getFullAddress()}" readonly>
     </div>
-    <div th:if="${flag}"><button class="w-100 btn btn-secondary btn-lg"onclick="location.href='posts.html'"th:onclick="|location.href='@{/members/{memberId}/update(memberId=${member.id})}'|"type="button">회원수정</button></div>
-    <div th:if="${flag}"><button class="w-100 btn btn-secondary btn-lg"onclick="location.href='posts.html'"th:onclick="|location.href='@{/members/{memberId}/delete(memberId=${member.id})}'|"type="button">회원탈퇴</button></div>
-
-    <div th:replace="fragments/footer :: footer" />
+    <div><button class="w-100 btn btn-secondary btn-lg" th:onclick="|location.href='@{/members/{memberId}/edit(memberId=${member.id})}'|"type="button">회원수정</button></div>
+    <div><button class="w-100 btn btn-secondary btn-lg" id="delete-button" type="button" th:attr="data-memberId=${member.id}">회원탈퇴</button></div>
+    <div th:replace="~{fragments/footer :: footer}" />
 </div>
+<script>
+    // Get a reference to the delete button
+    const deleteButton = document.getElementById('delete-button');
+    const memberId = deleteButton.getAttribute('data-memberId');
+
+    // Add an event listener to the button
+    deleteButton.addEventListener('click', function() {
+        // Create a form element
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/members/${memberId}/delete`; // Define the URL
+
+        // Create an input field for CSRF protection (if necessary)
+        // Replace 'csrfParameter' and 'csrfToken' with the appropriate values
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = '_csrf';
+        csrfInput.value = 'csrfToken';
+
+        // Append the input to the form
+        form.appendChild(csrfInput);
+
+        // Append the form to the document and submit it
+        document.body.appendChild(form);
+        form.submit();
+    });
+</script>
 </body>
 </html>

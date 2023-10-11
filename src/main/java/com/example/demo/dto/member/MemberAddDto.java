@@ -7,9 +7,11 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class MemberAddDto {
     private Long id;
 
@@ -27,7 +29,6 @@ public class MemberAddDto {
 
     private Role role;
 
-    @Embedded
     private Address address;
 
     public MemberAddDto() {
