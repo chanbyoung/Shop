@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header">
+<head th:replace="~{fragments/header :: header}" />
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
-        function sample6_execDaumPostcode() {
+        function Postcode() {
             new daum.Postcode({
                 oncomplete: function(data) {
                     // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
@@ -51,10 +51,19 @@
             }).open();
         }
     </script>
+    <style>
+        .container {
+            max-width: 560px;
+        }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div th:replace="~{fragments/bodyHeader :: bodyHeader}" />
     <div class="py-5 text-center">
         <h2>회원 가입</h2>
     </div>
@@ -119,10 +128,8 @@
         <div>
             <label for>주소</label>
             <input type="text" th:field="*{address.postCode}" id="postCode"  placeholder="우편번호" th:errorclass="field-error">
-            <div class="field-error" th:errors="*{address.postCode}" />
-            <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+            <input type="button" onclick="Postcode()" value="우편번호 찾기"><br>
             <input type="text" th:field="*{address.address}" id="address" placeholder="주소" th:errorclass="field-error"><br>
-            <div class="field-error" th:errors="*{address.address}" />
             <input type="text" th:field="*{address.detailAddress}" id="detailAddress" placeholder="상세주소">
             <input type="text" th:field="*{address.extraAddress}" id="extraAddress" placeholder="참고항목" >
         </div>
