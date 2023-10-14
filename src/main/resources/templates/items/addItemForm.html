@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}" >
+    <style>
+        .hidden-form {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div th:replace="~{fragments/bodyHeader :: bodyHeader}" />
+
+    <form th:action="@{/items/new}" th:object="${item}" method="post">
+        <div class="form-group">
+            <label th:for="name">상품명</label>
+            <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요">
+        </div>
+        <div class="form-group">
+            <label th:for="price">가격</label>
+            <input type="number" th:field="*{price}" class="form-control" placeholder="가격을 입력하세요">
+        </div>
+        <div class="form-group">
+            <label th:for="stockQuantity">수량</label>
+            <input type="number" th:field="*{stockQuantity}" class="form-control" placeholder="수량을 입력하세요">
+        </div>
+        <label for="options">옵션 선택:</label>
+        <select id="options" th:field="*{selectedOption}">
+            <option value="default">선택하세요</option>
+            <option value="book">Book</option>'
+            <option value="album">Album</option>
+            <option value="movie">Movie</option>
+        </select>
+        <div class="hidden-form" id="bookForm">
+            <div class="form-group">
+                <label for="author">저자</label>
+                <input type="text" th:field="*{author}" class="form-control" placeholder="저자를 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="isbn">ISBN</label>
+                <input type="text" th:field="*{isbn}" class="form-control" placeholder="ISBN을 입력하세요">
+            </div>
+        </div>
+        <div class="hidden-form" id="albumForm">
+            <div class="form-group">
+                <label for="artist">작가</label>
+                <input type="text" th:field="*{artist}" class="form-control" placeholder="작가를 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="etc">etc</label>
+                <input type="text" th:field="*{etc}" class="form-control" placeholder="etc를 입력하세요">
+            </div>
+        </div>
+        <div class="hidden-form" id="movieForm">
+            <div class="form-group">
+                <label for="director">감독</label>
+                <input type="text" th:field="*{director}" class="form-control" placeholder="감독을 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="actor">배우</label>
+                <input type="text" th:field="*{actor}" class="form-control" placeholder="배우를 입력하세요">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <br/>
+    <div th:replace="~{fragments/footer :: footer}" />
+</div> <!-- /container -->
+
+<script>
+    // JavaScript를 사용하여 옵션 변경 시 폼 표시/숨김 설정
+    document.getElementById("options").addEventListener("change", function() {
+        var selectedOption = this.value;
+        var bookForm = document.getElementById("bookForm");
+        var albumForm = document.getElementById("albumForm");
+        var movieForm = document.getElementById("movieForm");
+
+        // 모든 폼을 숨김
+        bookForm.style.display = "none";
+        albumForm.style.display = "none";
+        movieForm.style.display = "none";
+
+        if (selectedOption === "book") {
+            bookForm.style.display = "block";
+        } else if (selectedOption === "album"){
+            albumForm.style.display = "block";
+        } else if (selectedOption === "movie") {
+            movieForm.style.display = "block";
+        }
+    });
+
+    // 페이지 로드 시 초기화: 모든 폼을 숨김
+    window.onload = function() {
+        var bookForm = document.getElementById("bookForm");
+        var albumForm = document.getElementById("albumForm");
+        var movieForm = document.getElementById("movieForm");
+
+        bookForm.style.display = "none";
+        albumForm.style.display = "none";
+        movieForm.style.display = "none";
+    };
+</script>
+
+
+
+</body>
+</html>

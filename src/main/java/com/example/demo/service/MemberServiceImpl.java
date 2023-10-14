@@ -3,7 +3,7 @@ package com.example.demo.service;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.Role;
 import com.example.demo.dto.member.MemberAddDto;
-import com.example.demo.dto.member.MemberGetDto;
+import com.example.demo.dto.member. MemberGetDto;
 import com.example.demo.dto.member.MemberUpdateDto;
 import com.example.demo.reopsitory.MemberRepository;
 import lombok.RequiredArgsConstructor;
