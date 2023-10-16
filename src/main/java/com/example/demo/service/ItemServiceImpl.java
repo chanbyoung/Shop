@@ -6,10 +6,12 @@ import com.example.demo.domain.item.Book;
 import com.example.demo.domain.item.Item;
 import com.example.demo.domain.item.Movie;
 import com.example.demo.dto.item.ItemAddDto;
+import com.example.demo.dto.item.ItemGetDto;
 import com.example.demo.dto.item.ItemUpdateDto;
 import com.example.demo.dto.item.ItemsGetDto;
 import com.example.demo.dto.member.MemberGetDto;
 import com.example.demo.reopsitory.ItemRepository;
+import com.example.demo.reopsitory.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,39 +28,46 @@ import java.util.Optional;
 @Slf4j
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
+    private final MemberRepository memberRepository;
     @Override
     @Transactional
-    public void saveItem(ItemAddDto item) {
-        switch (item.getSelectedOption()) {
-            case "book" -> {
-                Book book = Book.builder()
-                        .name(item.getName())
-                        .price(item.getPrice())
-                        .stockQuantity(item.getStockQuantity())
-                        .author(item.getAuthor())
-                        .isbn(item.getIsbn())
-                        .build();
-                itemRepository.save(book);
-            }
-            case "album" -> {
-                Album album = Album.builder()
-                        .name(item.getName())
-                        .price(item.getPrice())
-                        .stockQuantity(item.getStockQuantity())
-                        .artist(item.getArtist())
-                        .etc(item.getEtc())
-                        .build();
-                itemRepository.save(album);
-            }
-            case "movie" -> {
-                Movie movie = Movie.builder()
-                        .name(item.getName())
-                        .price(item.getPrice())
-                        .stockQuantity(item.getStockQuantity())
-                        .actor(item.getActor())
-                        .director(item.getDirector())
-                        .build();
-                itemRepository.save(movie);
+    public void saveItem(ItemAddDto item, String username) {
+        Optional<Member> findMember = memberRepository.findByLoginId(username);
+        if(findMember.isPresent()) {
+            switch (item.getSelectedOption()) {
+                case "book" -> {
+                    Book book = Book.builder()
+                            .name(item.getName())
+                            .price(item.getPrice())
+                            .stockQuantity(item.getStockQuantity())
+                            .author(item.getAuthor())
+                            .isbn(item.getIsbn())
+                            .member(findMember.get())
+                            .build();
+                    itemRepository.save(book);
+                }
+                case "album" -> {
+                    Album album = Album.builder()
+                            .name(item.getName())
+                            .price(item.getPrice())
+                            .stockQuantity(item.getStockQuantity())
+                            .artist(item.getArtist())
+                            .etc(item.getEtc())
+                            .member(findMember.get())
+                            .build();
+                    itemRepository.save(album);
+                }
+                case "movie" -> {
+                    Movie movie = Movie.builder()
+                            .name(item.getName())
+                            .price(item.getPrice())
+                            .stockQuantity(item.getStockQuantity())
+                            .actor(item.getActor())
+                            .director(item.getDirector())
+                            .member(findMember.get())
+                            .build();
+                    itemRepository.save(movie);
+                }
             }
         }
     }
@@ -88,8 +97,25 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item getItem(Long itemId) {
+    public ItemGetDto getItem(Long itemId) {
         Optional<Item> item = itemRepository.findById(itemId);
-        return item.orElse(null);
+        if (item.isPresent()) {
+            Item findItem = item.get();
+            return ItemGetDto.builder()
+                    .id(findItem.getId())
+                    .name(findItem.getName())
+                    .memberName(findItem.getMember().getName())
+                    .price(findItem.getPrice())
+                    .stockQuantity(findItem.getStockQuantity())
+                    .build();
+        }
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        Optional<Item> item = itemRepository.findById(id);
+        item.ifPresent(itemRepository::delete);
     }
 }

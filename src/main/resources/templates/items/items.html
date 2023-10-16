@@ -19,7 +19,7 @@
             </thead>
             <tbody>
             <tr th:each="item : ${items}">
-                <td th:text="${item.id}"></td>
+                <td><a href="item.html" th:href="@{items/{itemId}(itemId=${item.id})}" th:text="${item.id}">상품상세</a></td>
                 <td th:text="${item.name}"></td>
                 <td th:text="${item.price}"></td>
                 <td th:text="${item.stockQuantity}"></td>
