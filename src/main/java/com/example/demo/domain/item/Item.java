@@ -1,6 +1,7 @@
 package com.example.demo.domain.item;
 
 import com.example.demo.domain.Member;
+import com.example.demo.domain.exception.NotEnoughStockException;
 import com.example.demo.dto.item.ItemUpdateDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,4 +36,11 @@ public abstract class Item {
         stockQuantity = itemUpdateDto.getStockQuantity();
     }
 
+    public void removeStock(int count) {
+        long restStock = stockQuantity - count;
+        if (restStock < 0) {
+            throw new NotEnoughStockException("need more stock");
+        }
+        stockQuantity =restStock;
+    }
 }

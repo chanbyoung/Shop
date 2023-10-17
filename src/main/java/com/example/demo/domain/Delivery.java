@@ -1,6 +1,7 @@
 package com.example.demo.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 
 @Entity
@@ -15,5 +16,10 @@ public class Delivery {
     private Address address;
 
     public Delivery() {
+    }
+
+    public Delivery(Address address) {
+        this.status = DeliveryStatus.READY;
+        this.address = address;
     }
 }

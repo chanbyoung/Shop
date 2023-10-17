@@ -8,17 +8,17 @@ import static jakarta.persistence.FetchType.*;
 
 @Entity
 @Getter
-public class Order_Item {
+public class CategoryItem {
     @Id @GeneratedValue
-    @Column(name = "order_item_id")
+    @Column(name = "category_item_id")
     private Long id;
+
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @JoinColumn(name ="category_id")
+    private Category category;
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
 
-    private Long orderPrice;
-    private Long count;
+
 }
