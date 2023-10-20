@@ -5,8 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static jakarta.persistence.FetchType.*;
@@ -25,6 +28,9 @@ public class Order {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
+
     @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery")
     private Delivery delivery;
@@ -37,6 +43,14 @@ public class Order {
     public Order() {
     }
 
+    public void addOrderItem(OrderItem orderItem) {
+        if (orderItems == null) {
+            orderItems = new ArrayList<>();
+        }
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
     public static Order createOrder(Member member, Delivery delivery, OrderItem...  orderItems) {
         Order order = Order.builder()
                 .member(member)
@@ -45,8 +59,18 @@ public class Order {
                 .localDateTime(LocalDateTime.now())
                 .build();
         for (OrderItem orderItem : orderItems) {
-            orderItem.setOrder(order);
+            order.addOrderItem(orderItem);
         }
         return order;
+    }
+
+    public void cancel() {
+        if (delivery.getStatus() == DeliveryStatus.COMP) {
+            throw new IllegalStateException("이미 배송이 완료된 상품은 취소할 수 없습니다.");
+        }
+        this.status = OrderStatus.CANCEL;
+        for (OrderItem orderItem : orderItems) {
+            orderItem.cancel();
+        }
     }
 }

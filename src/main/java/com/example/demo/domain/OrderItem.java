@@ -31,4 +31,17 @@ public class OrderItem {
     public void setOrder(Order order) {
         this.order = order;
     }
+
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "id=" + id +
+                ", orderPrice=" + orderPrice +
+                ", count=" + count +
+                '}';
+    }
+
+    public void cancel() {
+        getItem().addStock(count);
+    }
 }

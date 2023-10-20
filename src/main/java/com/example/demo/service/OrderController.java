@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.domain.Order;
 import com.example.demo.dto.item.ItemsGetDto;
+import com.example.demo.web.OrderSearch;
 import com.example.demo.web.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,9 +11,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,4 +34,16 @@ public class OrderController {
         return "redirect:/orders";
     }
 
+    @GetMapping("/orders")
+    public String getOrders(@ModelAttribute("orderSearch") OrderSearch orderSearch, Model model, @PageableDefault Pageable pageable) {
+        Page<Order> orders = orderService.getOrders(orderSearch, pageable);
+        model.addAttribute("orders", orders);
+        return "orders/orders";
+    }
+
+    @PostMapping("/orders/{orderId}/cancel")
+    public String cancelOrder(@PathVariable("orderId") Long orderId) {
+        orderService.cancelOrder(orderId);
+        return "redirect:/orders";
+    }
 }
