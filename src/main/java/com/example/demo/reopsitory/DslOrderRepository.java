@@ -6,6 +6,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Query;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -18,18 +19,20 @@ import static com.example.demo.domain.QOrder.*;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class DslOrderRepository {
     private final JPAQueryFactory query;
     public Page<Order> getOrders(OrderSearch orderSearch, Pageable pageable) {
+        log.info("orderSearch = {}", orderSearch);
         String memberName = orderSearch.getMemberName();
         OrderStatus orderStatus = orderSearch.getOrderStatus();
         BooleanBuilder builder = new BooleanBuilder();
-//        if (StringUtils.hasText(memberName)) {
-//            builder.and(order.member.name.eq(memberName));
-//        }
-//        if (StringUtils.hasText(String.valueOf(orderStatus))) {
-//            builder.and(order.status.stringValue().eq(String.valueOf(orderStatus)));
-//        }
+        if (StringUtils.hasText(memberName)) {
+            builder.and(order.member.name.eq(memberName));
+        }
+        if (orderStatus != null) {
+            builder.and(order.status.eq(orderStatus));
+        }
         List<Order> orders = query.select(order)
                 .from(order)
                 .leftJoin(order.member, QMember.member)

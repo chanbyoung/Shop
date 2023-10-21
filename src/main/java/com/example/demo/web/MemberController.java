@@ -25,8 +25,8 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping
-    public String members(Model model, @PageableDefault(size = 5) Pageable pageable) {
-        Page<MemberGetDto> members = memberService.getMembers(pageable);
+    public String members(Model model, @PageableDefault(size = 5) Pageable pageable, @RequestParam(value = "name",required = false) String name) {
+        Page<MemberGetDto> members = memberService.getMembers(pageable, name);
         model.addAttribute("members", members);
         return "/members/members";
     }

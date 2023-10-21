@@ -4,6 +4,11 @@
 <body>
 <div class="container">
     <div th:replace="~{fragments/bodyHeader :: bodyHeader}" />
+    <form th:action th:method="get">
+        <label for ="name">이름</label>
+        <input th:type="text" id="name" name="name">
+        <input th:type="submit" th:value="검색">
+    </form>
     <div>
         <table class="table table-striped">
             <thead>

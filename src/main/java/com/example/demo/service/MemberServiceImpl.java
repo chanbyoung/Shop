@@ -5,6 +5,7 @@ import com.example.demo.domain.Role;
 import com.example.demo.dto.member.MemberAddDto;
 import com.example.demo.dto.member. MemberGetDto;
 import com.example.demo.dto.member.MemberUpdateDto;
+import com.example.demo.reopsitory.DslMemberRepository;
 import com.example.demo.reopsitory.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class MemberServiceImpl implements MemberService{
+    private final DslMemberRepository dslMemberRepository;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -48,8 +50,8 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public Page<MemberGetDto> getMembers(Pageable pageable) {
-        return memberRepository.findByMembers(pageable).map(this::convertToDTO);
+    public Page<MemberGetDto> getMembers(Pageable pageable,String name) {
+        return dslMemberRepository.getMembers(pageable, name).map(this::convertToDTO);
         // 리포지토리 계층에서 조회된 Page<Member>을 Page<MemberGetDto>로 변환해서 반환
     }
 

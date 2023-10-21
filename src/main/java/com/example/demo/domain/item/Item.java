@@ -28,6 +28,7 @@ public abstract class Item {
     private Member member;
     private Long price;
     private Long stockQuantity;
+    private String selectedOption;
 
     public void updateItem(ItemUpdateDto itemUpdateDto) {
         name = itemUpdateDto.getName();

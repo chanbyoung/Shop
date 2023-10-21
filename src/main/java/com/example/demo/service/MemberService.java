@@ -12,7 +12,7 @@ public interface MemberService {
 
     MemberGetDto getMember(Long memberId);
 
-    Page<MemberGetDto> getMembers(Pageable pageable);
+    Page<MemberGetDto> getMembers(Pageable pageable,String name);
 
 
     void updateMember(Long memberId, MemberUpdateDto memberUpdateDto);
