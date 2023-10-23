@@ -28,8 +28,8 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping
-    public String getItems(Model model, @PageableDefault(size = 5) Pageable pageable) {
-        Page<ItemsGetDto> items = itemService.getItems(pageable);
+    public String getItems(Model model, @PageableDefault(size = 5) Pageable pageable, @ModelAttribute ItemSearch itemSearch ) {
+        Page<ItemsGetDto> items = itemService.getItems(pageable, itemSearch);
         model.addAttribute("items", items);
         return "items/items";
     }

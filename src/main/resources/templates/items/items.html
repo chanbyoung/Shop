@@ -7,6 +7,20 @@
     <div th:replace="~{fragments/bodyHeader :: bodyHeader}"/>
 
     <div>
+        <form th:action th:object="${itemSearch}">
+            <label>
+                <select th:field="*{selectedOption}">
+                    <option value="">==카테고리==</option>
+                    <option th:value="book" th:text="책"></option>
+                    <option th:value="movie" th:text="영화"></option>
+                    <option th:value="album" th:text="앨범"></option>
+                </select>
+            </label>
+            <label>
+                <input th:field="*{name}" />
+            </label>
+            <button th:type="submit">전송</button>
+        </form>
         <table class="table table-striped">
             <thead>
             <tr>

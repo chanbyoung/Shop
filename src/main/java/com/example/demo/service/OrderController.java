@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.domain.Order;
 import com.example.demo.dto.item.ItemsGetDto;
+import com.example.demo.web.ItemSearch;
 import com.example.demo.web.OrderSearch;
 import com.example.demo.web.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class OrderController {
 
     @GetMapping("/order")
     public String getOrder(Model model, @PageableDefault(size = 5) Pageable pageable) {
-        Page<ItemsGetDto> items = itemService.getItems(pageable);
+        Page<ItemsGetDto> items = itemService.getItems(pageable, new ItemSearch());
         model.addAttribute("items", items);
         return "orders/order";
     }

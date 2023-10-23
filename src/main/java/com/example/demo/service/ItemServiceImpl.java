@@ -10,8 +10,10 @@ import com.example.demo.dto.item.ItemGetDto;
 import com.example.demo.dto.item.ItemUpdateDto;
 import com.example.demo.dto.item.ItemsGetDto;
 import com.example.demo.dto.member.MemberGetDto;
+import com.example.demo.reopsitory.DslItemRepository;
 import com.example.demo.reopsitory.ItemRepository;
 import com.example.demo.reopsitory.MemberRepository;
+import com.example.demo.web.ItemSearch;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -28,6 +30,7 @@ import java.util.Optional;
 @Slf4j
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
+    private final DslItemRepository dslItemRepository;
     private final MemberRepository memberRepository;
     @Override
     @Transactional
@@ -86,9 +89,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Page<ItemsGetDto> getItems(Pageable pageable) {
+    public Page<ItemsGetDto> getItems(Pageable pageable, ItemSearch itemSearch) {
 
-        return itemRepository.findByItems(pageable).map(this::convertToDTO);
+        return dslItemRepository.findByItems(pageable, itemSearch).map(this::convertToDTO);
     }
     private ItemsGetDto convertToDTO(Item item) {
         return ItemsGetDto.builder()
