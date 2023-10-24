@@ -4,6 +4,7 @@
 <body>
 <div class="container">
     <div th:replace="~{fragments/bodyHeader :: bodyHeader}" />
+    <h4 th:if="${flag}" th:style="'color:red'" th:text="#{member.authentication.error}"></h4>
     <div>
         <label for="loginId" th:text="#{label.member.loginId}">작성자 id</label>
         <input type="text" id="loginId" name="loginId" class="form-control" value="10000" th:value="${member.loginId}" readonly>

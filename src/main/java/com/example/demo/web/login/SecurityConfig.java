@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((request)->
                         request.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                                .requestMatchers("/", "/members/add","/members/findMember/**", "/login", "/logout", "/css/**", "/*.ico",
+                                .requestMatchers("/","/members","/members/add","/members/findMember/**", "/login", "/logout", "/css/**", "/*.ico",
                                         "/error", "/api/**","/members/js/findAddress.js", "/mailCheck").permitAll()
                                 .anyRequest().authenticated())
                 .formLogin(login -> login

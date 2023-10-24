@@ -2,6 +2,7 @@ package com.example.demo.domain;
 
 import com.example.demo.dto.member.MemberUpdateDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,15 +17,15 @@ public class Member {
     @Id @GeneratedValue
     @Column(name = "member_id")
     private Long id;
-
+    @NotEmpty
     private String loginId;
-
+    @NotEmpty
     private String password;
-
+    @NotEmpty
     private String name;
-
+    @NotEmpty
     private String email;
-
+    @NotEmpty
     private String birth;
     @Enumerated(EnumType.STRING)
     private Gender gender;

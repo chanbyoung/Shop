@@ -51,6 +51,15 @@
         }).open();
     }
 </script>
+    <style>
+        .container {
+            max-width: 560px;
+        }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -60,20 +69,11 @@
     </div>
     <form action="member.html" th:action  th:object="${member}" method="post">
         <div>
-            <label for="loginId" th:text="#{label.member.loginId}">loginId</label>
-            <input type="text" id="loginId" th:field="*{loginId}" readonly>
-        </div>
-        <div>
-            <label for="name" th:text="#{label.member.name}">content</label>
+            <label for="name" th:text="#{label.member.name}">이름</label>
             <input type="text" id="name" th:field="*{name}" th:errorclass="field-error" class="form-control" placeholder="내용을 입력하세요">
             <div class="field-error" th:errors="*{name}">
                 내용 오류
             </div>
-        </div>
-        <div>
-            <label for="email">이메일</label>
-            <input type="text" id="email" th:field="*{email}" class="form-control" th:errorclass="field-error" readonly>
-            <div class="field-error" th:errors="*{email}" />
         </div>
         <div>
             <label for="birth" th:text="#{label.member.birth}">birth</label>
