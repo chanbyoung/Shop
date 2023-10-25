@@ -7,24 +7,20 @@
     <div th:replace="~{fragments/bodyHeader :: bodyHeader}"/>
 
     <form th:object="${item}" method="post">
-        <!-- id -->
-        <input type="hidden" th:field="*{id}" />
-
         <div class="form-group">
             <label th:for="name">상품명</label>
-            <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요" />
+            <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{name}" />
         </div>
         <div class="form-group">
             <label th:for="price">가격</label>
-            <input type="number" th:field="*{price}" class="form-control" placeholder="가격을 입력하세요" />
-        </div>
-        <div class="form-group">
-            <label th:for="membername">작성자</label>
-            <input type="text" th:field="*{memberName}" class="form-control" readonly/>
+            <input type="number" id="price" th:field="*{price}" class="form-control" placeholder="가격을 입력하세요" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{price}" />
         </div>
         <div class="form-group">
             <label th:for="stockQuantity">수량</label>
-            <input type="number" th:field="*{stockQuantity}" class="form-control" placeholder="수량을 입력하세요" />
+            <input type="number" id="stockQuantity" th:field="*{stockQuantity}" class="form-control" placeholder="수량을 입력하세요" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{stockQuantity}" />
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

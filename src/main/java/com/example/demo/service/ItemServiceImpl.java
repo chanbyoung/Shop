@@ -110,7 +110,7 @@ public class ItemServiceImpl implements ItemService {
             return ItemGetDto.builder()
                     .id(findItem.getId())
                     .name(findItem.getName())
-                    .memberName(findItem.getMember().getName())
+                    .memberName(findItem.getMember().getLoginId())
                     .price(findItem.getPrice())
                     .stockQuantity(findItem.getStockQuantity())
                     .build();

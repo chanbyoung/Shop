@@ -5,6 +5,13 @@
         .hidden-form {
             display: none;
         }
+        .container {
+            max-width: 560px;
+        }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
     </style>
 </head>
 <body>
@@ -13,16 +20,19 @@
 
     <form th:action="@{/items/new}" th:object="${item}" method="post">
         <div class="form-group">
-            <label th:for="name">상품명</label>
-            <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요">
+            <label for="name">상품명</label>
+            <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{name}" />
         </div>
         <div class="form-group">
-            <label th:for="price">가격</label>
-            <input type="number" th:field="*{price}" class="form-control" placeholder="가격을 입력하세요">
+            <label for="price">가격</label>
+            <input type="number" id="price" th:field="*{price}" class="form-control" placeholder="가격을 입력하세요" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{price}" />
         </div>
         <div class="form-group">
-            <label th:for="stockQuantity">수량</label>
-            <input type="number" th:field="*{stockQuantity}" class="form-control" placeholder="수량을 입력하세요">
+            <label for="stockQuantity">수량</label>
+            <input type="number" id="stockQuantity" th:field="*{stockQuantity}" class="form-control" placeholder="수량을 입력하세요" th:errorclass="field-error">
+            <div class="field-error" th:errors="*{stockQuantity}" />
         </div>
         <label for="options">옵션 선택:</label>
         <select id="options" th:field="*{selectedOption}">

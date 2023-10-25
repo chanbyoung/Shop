@@ -4,6 +4,7 @@
 <body>
 <div class="container">
     <div th:replace="~{fragments/bodyHeader :: bodyHeader}" />
+    <h4 th:if="${flag}" th:style="'color:red'" th:text="#{member.authentication.error}"></h4>
     <form th:action="@{/items/{itemId}/delete(itemId=${item.id})}" th:object="${item}" method="post">
     <div>
         <label for="id" th:text="#{label.item.id}">id</label>

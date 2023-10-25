@@ -1,5 +1,7 @@
 package com.example.demo.dto.item;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,9 +11,13 @@ import lombok.ToString;
 @ToString
 
 public class ItemAddDto {
+    @NotEmpty
     private String name;
+    @NotNull
     private Long price;
+    @NotNull
     private Long stockQuantity;
+    @NotEmpty
     private String selectedOption;
 
     private String artist;

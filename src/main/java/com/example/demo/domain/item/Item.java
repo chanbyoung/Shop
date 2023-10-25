@@ -4,6 +4,8 @@ import com.example.demo.domain.Member;
 import com.example.demo.exception.NotEnoughStockException;
 import com.example.demo.dto.item.ItemUpdateDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,12 +24,16 @@ public abstract class Item {
     @Id @GeneratedValue
     @Column(name = "item_id")
     private Long id;
+    @NotEmpty
     private String name;
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+    @NotNull
     private Long price;
+    @NotNull
     private Long stockQuantity;
+    @NotEmpty
     private String selectedOption;
 
     public void updateItem(ItemUpdateDto itemUpdateDto) {
