@@ -6,7 +6,7 @@
 <div class="container">
 
     <div th:replace="~{fragments/bodyHeader :: bodyHeader}"/>
-
+    <h4 th:if="${flag}" th:style="'color:red'" th:text="#{member.authentication.error}"></h4>
     <div>
         <div>
             <form th:object="${orderSearch}" class="form-inline">
