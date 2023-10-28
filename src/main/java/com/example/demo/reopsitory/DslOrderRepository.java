@@ -40,6 +40,7 @@ public class DslOrderRepository {
                 .leftJoin(order.delivery, QDelivery.delivery)
                 .fetchJoin()
                 .where(builder)
+                .orderBy(order.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .distinct().fetch();

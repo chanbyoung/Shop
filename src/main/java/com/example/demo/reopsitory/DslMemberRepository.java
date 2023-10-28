@@ -1,7 +1,6 @@
 package com.example.demo.reopsitory;
 
 import com.example.demo.domain.Member;
-import com.example.demo.domain.QMember;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +26,7 @@ public class DslMemberRepository {
         List<Member> members = query.select(member)
                 .from(member)
                 .where(builder)
+                .orderBy(member.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .distinct().fetch();

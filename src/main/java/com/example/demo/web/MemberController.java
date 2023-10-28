@@ -33,6 +33,7 @@ public class MemberController {
     public String members(Model model, @PageableDefault(size = 5) Pageable pageable, @RequestParam(value = "name",required = false) String name) {
         Page<MemberGetDto> members = memberService.getMembers(pageable, name);
         model.addAttribute("members", members);
+        model.addAttribute("pageable", pageable);
         return "/members/members";
     }
 

@@ -26,6 +26,7 @@ public class DslItemRepository {
         List<Item> findItems = query.select(item)
                 .from(item)
                 .where(builder)
+                .orderBy(item.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .distinct().fetch();

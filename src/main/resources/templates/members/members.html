@@ -13,7 +13,6 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>#</th>
                 <th>이름</th>
                 <th>email</th>
                 <th>생년월일</th>
@@ -22,14 +21,17 @@
             </thead>
             <tbody>
             <tr th:each="member : ${members}">
-                <td><a href="member.html" th:href="@{/members/{memberId}(memberId=${member.id})}" th:text="${member.id}">이름</a></td>
-                <td th:text="${member.name}"></td>
+                <td><a href="member.html" th:href="@{/members/{memberId}(memberId=${member.id})}" th:text="${member.name}">이름</a></td>
                 <td th:text="${member.email}"></td>
                 <td th:text="${member.getBirth()}"></td>
                 <td th:text="${member.getAddress().getAddress()}"></td>
             </tr>
             </tbody>
         </table>
+        <th:block th:each="page:${#numbers.sequence(0,(members.getTotalPages()-1 ge 0 ? members.getTotalPages()-1 : 0))}">
+            <a th:if="${page != pageable.getPageNumber()}" th:href="@{/members(page=${page})}" th:text ="${page}+1"></a>
+            <strong th:if="${page== pageable.getPageNumber()}" th:text ="${page}+1" style="color:red"></strong>
+        </th:block>
     </div>`
     <div th:replace="~{fragments/footer :: footer}" />
 </div> <!-- /container -->

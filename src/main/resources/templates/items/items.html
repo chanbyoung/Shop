@@ -24,7 +24,6 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>#</th>
                 <th>상품명</th>
                 <th>가격</th>
                 <th>재고수량</th>
@@ -33,8 +32,7 @@
             </thead>
             <tbody>
             <tr th:each="item : ${items}">
-                <td><a href="item.html" th:href="@{items/{itemId}(itemId=${item.id})}" th:text="${item.id}">상품상세</a></td>
-                <td th:text="${item.name}"></td>
+                <td><a href="item.html" th:href="@{items/{itemId}(itemId=${item.id})}" th:text="${item.name}">상품상세</a></td>
                 <td th:text="${item.price}"></td>
                 <td th:text="${item.stockQuantity}"></td>
                 <td>
@@ -43,6 +41,10 @@
             </tr>
             </tbody>
         </table>
+        <th:block th:each="page:${#numbers.sequence(0,(items.getTotalPages()-1 ge 0 ? items.getTotalPages()-1 : 0))}">
+            <a th:if="${page != pageable.getPageNumber()}" th:href="@{/items(page=${page})}" th:text ="${page}+1"></a>
+            <strong th:if="${page== pageable.getPageNumber()}" th:text ="${page}+1" style="color:red"></strong>
+        </th:block>
     </div>
 
     <div th:replace="~{fragments/footer :: footer}"/>

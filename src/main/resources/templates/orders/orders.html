@@ -53,9 +53,12 @@
                        class="btn btn-danger">CANCEL</a>
                 </td>
             </tr>
-
             </tbody>
         </table>
+        <th:block th:each="page:${#numbers.sequence(0,(orders.getTotalPages()-1 ge 0 ? orders.getTotalPages()-1 : 0))}">
+            <a th:if="${page != pageable.getPageNumber()}" th:href="@{/orders(page=${page})}" th:text ="${page}+1"></a>
+            <strong th:if="${page== pageable.getPageNumber()}" th:text ="${page}+1" style="color:red"></strong>
+        </th:block>
     </div>
 
     <div th:replace="~{fragments/footer :: footer}"/>

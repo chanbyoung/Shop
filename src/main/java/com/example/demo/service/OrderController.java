@@ -55,6 +55,7 @@ public class OrderController {
     public String getOrders(@ModelAttribute("orderSearch") OrderSearch orderSearch, Model model, @PageableDefault Pageable pageable) {
         Page<Order> orders = orderService.getOrders(orderSearch, pageable);
         model.addAttribute("orders", orders);
+        model.addAttribute("pageable", pageable);
         return "orders/orders";
     }
 
