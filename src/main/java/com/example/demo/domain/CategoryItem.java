@@ -2,12 +2,15 @@ package com.example.demo.domain;
 
 import com.example.demo.domain.item.Item;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 import static jakarta.persistence.FetchType.*;
 
 @Entity
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CategoryItem {
     @Id @GeneratedValue
     @Column(name = "category_item_id")
@@ -20,5 +23,7 @@ public class CategoryItem {
     @JoinColumn(name = "item_id")
     private Item item;
 
-
+    public void setItem(Item item) {
+        this.item = item;
+    }
 }

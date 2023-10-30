@@ -1,10 +1,12 @@
 package com.example.demo.service;
 
+import com.example.demo.domain.Category;
 import com.example.demo.domain.item.Item;
 import com.example.demo.dto.item.ItemAddDto;
 import com.example.demo.dto.item.ItemGetDto;
 import com.example.demo.dto.item.ItemUpdateDto;
 import com.example.demo.dto.item.ItemsGetDto;
+import com.example.demo.web.CategoryAddDto;
 import com.example.demo.web.ItemSearch;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,4 +22,8 @@ public interface ItemService {
     ItemGetDto getItem(Long itemId);
 
     void delete(Long id);
+
+    void addCategory(CategoryAddDto categoryAddDto);
+
+    List<Category> getCategories();
 }

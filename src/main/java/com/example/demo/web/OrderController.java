@@ -1,12 +1,11 @@
-package com.example.demo.service;
+package com.example.demo.web;
 
 import com.example.demo.domain.Order;
 import com.example.demo.dto.item.ItemsGetDto;
 import com.example.demo.dto.order.OrderDto;
 import com.example.demo.exception.NotEnoughStockException;
-import com.example.demo.web.ItemSearch;
-import com.example.demo.web.OrderSearch;
-import com.example.demo.web.OrderService;
+import com.example.demo.service.ItemService;
+import com.example.demo.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,8 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor

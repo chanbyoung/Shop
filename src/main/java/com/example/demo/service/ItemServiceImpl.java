@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.domain.Category;
+import com.example.demo.domain.CategoryItem;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.item.Album;
 import com.example.demo.domain.item.Book;
@@ -10,9 +12,11 @@ import com.example.demo.dto.item.ItemGetDto;
 import com.example.demo.dto.item.ItemUpdateDto;
 import com.example.demo.dto.item.ItemsGetDto;
 import com.example.demo.dto.member.MemberGetDto;
+import com.example.demo.reopsitory.CategoryRepository;
 import com.example.demo.reopsitory.DslItemRepository;
 import com.example.demo.reopsitory.ItemRepository;
 import com.example.demo.reopsitory.MemberRepository;
+import com.example.demo.web.CategoryAddDto;
 import com.example.demo.web.ItemSearch;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -32,10 +37,13 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final DslItemRepository dslItemRepository;
     private final MemberRepository memberRepository;
+    private final CategoryRepository categoryRepository;
     @Override
     @Transactional
     public void saveItem(ItemAddDto item, String username) {
+        Category category = categoryRepository.findById(item.getCategoryId()).get();
         Optional<Member> findMember = memberRepository.findByLoginId(username);
+        Item saveItem = null;
         if(findMember.isPresent()) {
             switch (item.getSelectedOption()) {
                 case "book" -> {
@@ -48,7 +56,7 @@ public class ItemServiceImpl implements ItemService {
                             .isbn(item.getIsbn())
                             .member(findMember.get())
                             .build();
-                    itemRepository.save(book);
+                    saveItem = itemRepository.save(book);
                 }
                 case "album" -> {
                     Album album = Album.builder()
@@ -60,7 +68,7 @@ public class ItemServiceImpl implements ItemService {
                             .etc(item.getEtc())
                             .member(findMember.get())
                             .build();
-                    itemRepository.save(album);
+                    saveItem = itemRepository.save(album);
                 }
                 case "movie" -> {
                     Movie movie = Movie.builder()
@@ -72,9 +80,14 @@ public class ItemServiceImpl implements ItemService {
                             .director(item.getDirector())
                             .member(findMember.get())
                             .build();
-                    itemRepository.save(movie);
+                    saveItem =itemRepository.save(movie);
                 }
             }
+            CategoryItem categoryItem = CategoryItem.builder()
+                    .category(category)
+                    .item(saveItem)
+                    .build();
+            Objects.requireNonNull(saveItem).addCategoryItem(categoryItem);
         }
     }
 
@@ -123,5 +136,20 @@ public class ItemServiceImpl implements ItemService {
     public void delete(Long id) {
         Optional<Item> item = itemRepository.findById(id);
         item.ifPresent(itemRepository::delete);
+    }
+
+    @Override
+    @Transactional
+    public void addCategory(CategoryAddDto categoryAddDto) {
+        Category category = Category.builder()
+                .name(categoryAddDto.getName())
+                .build();
+        categoryRepository.save(category);
+
+    }
+
+    @Override
+    public List<Category> getCategories() {
+        return categoryRepository.findAll();
     }
 }

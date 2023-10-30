@@ -1,5 +1,6 @@
 package com.example.demo.web;
 
+import com.example.demo.domain.Category;
 import com.example.demo.domain.item.Item;
 import com.example.demo.dto.item.ItemAddDto;
 import com.example.demo.dto.item.ItemGetDto;
@@ -48,6 +49,8 @@ public class ItemController {
 
     @GetMapping("/new")
     public String addItemForm(Model model) {
+        List<Category> categories = itemService.getCategories();
+        model.addAttribute("categories", categories);
         model.addAttribute("item", new ItemAddDto());
         return "items/addItemForm";
     }
@@ -93,5 +96,17 @@ public class ItemController {
         }
         itemService.delete(id);
         return "redirect:/items";
+    }
+
+    @GetMapping("/category/add")
+    public String addCategoryForm(Model model) {
+        model.addAttribute("category", new CategoryAddDto());
+        return "categories/add";
+    }
+
+    @PostMapping ("/category/add")
+    public String addCategory(@ModelAttribute(name = "category") CategoryAddDto categoryAddDto) {
+        itemService.addCategory(categoryAddDto);
+        return "redirect:/";
     }
 }

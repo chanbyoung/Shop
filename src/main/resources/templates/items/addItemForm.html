@@ -19,7 +19,11 @@
     <div th:replace="~{fragments/bodyHeader :: bodyHeader}" />
 
     <form th:action="@{/items/new}" th:object="${item}" method="post">
-        <div class="form-group">
+        <select id="category" name="categoryId">
+            <label for="category">카테고리</label>
+            <option value="">카테고리 선택</option>
+            <option th:each="category : ${categories}"  th:value="${category.id}" th:text="${category.name}"></option>
+        </select>        <div class="form-group">
             <label for="name">상품명</label>
             <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요" th:errorclass="field-error">
             <div class="field-error" th:errors="*{name}" />

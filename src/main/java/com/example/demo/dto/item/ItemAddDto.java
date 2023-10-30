@@ -11,6 +11,8 @@ import lombok.ToString;
 @ToString
 
 public class ItemAddDto {
+    private Long categoryId;
+
     @NotEmpty
     private String name;
     @NotNull

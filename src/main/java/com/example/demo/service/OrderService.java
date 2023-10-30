@@ -1,4 +1,4 @@
-package com.example.demo.web;
+package com.example.demo.service;
 
 import com.example.demo.domain.Delivery;
 import com.example.demo.domain.Member;
@@ -10,6 +10,7 @@ import com.example.demo.reopsitory.DslOrderRepository;
 import com.example.demo.reopsitory.ItemRepository;
 import com.example.demo.reopsitory.MemberRepository;
 import com.example.demo.reopsitory.OrderRepository;
+import com.example.demo.web.OrderSearch;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

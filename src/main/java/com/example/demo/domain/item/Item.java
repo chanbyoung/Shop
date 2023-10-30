@@ -1,5 +1,6 @@
 package com.example.demo.domain.item;
 
+import com.example.demo.domain.CategoryItem;
 import com.example.demo.domain.Member;
 import com.example.demo.exception.NotEnoughStockException;
 import com.example.demo.dto.item.ItemUpdateDto;
@@ -10,6 +11,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.FetchType.*;
 
@@ -29,12 +33,24 @@ public abstract class Item {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+    @OneToMany(mappedBy = "item",cascade = CascadeType.ALL)
+    private List<CategoryItem> categoryItems;
     @NotNull
     private Long price;
     @NotNull
     private Long stockQuantity;
     @NotEmpty
     private String selectedOption;
+
+
+    //연관관계 메서드
+    public void addCategoryItem(CategoryItem categoryItem) {
+        if (categoryItems == null) {
+            categoryItems = new ArrayList<>();
+        }
+        categoryItems.add(categoryItem);
+        categoryItem.setItem(this);
+    }
 
     public void updateItem(ItemUpdateDto itemUpdateDto) {
         name = itemUpdateDto.getName();
