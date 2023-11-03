@@ -34,8 +34,11 @@ public class ItemController {
 
     @GetMapping
     public String getItems(Model model, @PageableDefault(size = 5) Pageable pageable, @ModelAttribute ItemSearch itemSearch ) {
+        log.info("itemSearch={}" ,itemSearch);
         Page<ItemsGetDto> items = itemService.getItems(pageable, itemSearch);
+        List<Category> categories = itemService.getCategories();
         model.addAttribute("items", items);
+        model.addAttribute("categories", categories);
         model.addAttribute("pageable", pageable);
         return "items/items";
     }

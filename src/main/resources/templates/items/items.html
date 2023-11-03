@@ -9,11 +9,9 @@
     <div>
         <form th:action th:object="${itemSearch}">
             <label>
-                <select th:field="*{selectedOption}">
-                    <option value="">==카테고리==</option>
-                    <option th:value="book" th:text="책"></option>
-                    <option th:value="movie" th:text="영화"></option>
-                    <option th:value="album" th:text="앨범"></option>
+                <select th:field="*{category}" id = "category">
+                    <option  value="" >==카테고리==</option>
+                    <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">카테고리</option>
                 </select>
             </label>
             <label>

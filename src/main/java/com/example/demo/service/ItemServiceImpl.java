@@ -103,8 +103,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Page<ItemsGetDto> getItems(Pageable pageable, ItemSearch itemSearch) {
-
-        return dslItemRepository.findByItems(pageable, itemSearch).map(this::convertToDTO);
+        return dslItemRepository.findByItems(pageable,itemSearch).map(this::convertToDTO);
     }
     private ItemsGetDto convertToDTO(Item item) {
         return ItemsGetDto.builder()

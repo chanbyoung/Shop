@@ -18,7 +18,6 @@ import static jakarta.persistence.FetchType.*;
 @Entity
 @Table(name = "orders")
 @Getter
-@Builder
 @AllArgsConstructor
 public class Order {
     @Id @GeneratedValue
@@ -30,7 +29,7 @@ public class Order {
     private Member member;
 
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems;
+    private List<OrderItem> orderItems= new ArrayList<>();
 
     @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery")
@@ -40,14 +39,18 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+    @Builder
+    public Order(Member member, Delivery delivery, LocalDateTime localDateTime, OrderStatus status) {
+        this.member = member;
+        this.delivery = delivery;
+        this.localDateTime = localDateTime;
+        this.status = status;
+    }
 
     public Order() {
     }
 
     public void addOrderItem(OrderItem orderItem) {
-        if (orderItems == null) {
-            orderItems = new ArrayList<>();
-        }
         orderItems.add(orderItem);
         orderItem.setOrder(this);
     }
