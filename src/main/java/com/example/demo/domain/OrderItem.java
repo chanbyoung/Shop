@@ -25,7 +25,7 @@ public class OrderItem {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    private Long orderPrice;
+    private Long orderPrice; //바꿔야됨
     private int count;
 
     public void setOrder(Order order) {

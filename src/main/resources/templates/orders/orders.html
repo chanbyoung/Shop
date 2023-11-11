@@ -41,7 +41,7 @@
             </thead>
             <tbody>
             <tr th:each="order : ${orders}">
-                <td th:text="${order.id}"></td>
+                <td><a th:href="@{/orders/{orderId}(orderId=${order.id})}" th:text="${order.id}"></a></td>
                 <td th:text="${order.member.name}"></td>
                 <td th:text="${order.orderItems[0].item.name}"></td>
                 <td th:text="${order.orderItems[0].orderPrice}"></td>
