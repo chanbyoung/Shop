@@ -1,12 +1,14 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Member;
+import com.example.demo.domain.Order;
 import com.example.demo.domain.Role;
 import com.example.demo.dto.member.MemberAddDto;
 import com.example.demo.dto.member. MemberGetDto;
 import com.example.demo.dto.member.MemberUpdateDto;
 import com.example.demo.reopsitory.DslMemberRepository;
 import com.example.demo.reopsitory.MemberRepository;
+import com.example.demo.reopsitory.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -15,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -23,6 +26,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class MemberServiceImpl implements MemberService{
+
+    private final OrderRepository orderRepository;
     private final DslMemberRepository dslMemberRepository;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -46,7 +51,12 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public MemberGetDto getMember(Long memberId) {
         Optional<Member> findMember = memberRepository.findById(memberId);
-        return convertToDTO(findMember.get());
+        if (findMember.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+        MemberGetDto memberGetDto = convertToDTO(findMember.get());
+        memberGetDto.setOrderList(orderRepository.findOrderByMemberId(memberId));
+        return memberGetDto;
     }
 
     @Override

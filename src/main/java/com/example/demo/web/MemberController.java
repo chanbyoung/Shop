@@ -5,6 +5,7 @@ import com.example.demo.domain.Member;
 import com.example.demo.dto.member.MemberAddDto;
 import com.example.demo.dto.member.MemberGetDto;
 import com.example.demo.dto.member.MemberUpdateDto;
+import com.example.demo.reopsitory.MemberRepository;
 import com.example.demo.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/members")
@@ -28,6 +30,8 @@ import java.util.Objects;
 @Slf4j
 public class MemberController {
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
+
 
     @GetMapping
     public String members(Model model, @PageableDefault(size = 5) Pageable pageable, @RequestParam(value = "name",required = false) String name) {
@@ -35,6 +39,19 @@ public class MemberController {
         model.addAttribute("members", members);
         model.addAttribute("pageable", pageable);
         return "/members/members";
+    }
+
+    @GetMapping("/my")
+    public String myInfo(Authentication authentication,RedirectAttributes redirectAttributes) {
+        String loginId = authentication.getName();
+        Optional<Member> member = memberRepository.findByLoginId(loginId);
+        if (member.isPresent()) {
+            Long memberId = member.get().getId();
+            redirectAttributes.addAttribute("memberId", memberId);
+            redirectAttributes.addFlashAttribute("my", Boolean.TRUE);
+            return "redirect:/members/{memberId}";
+        }
+        return "redirect:/";
     }
 
     @GetMapping("/{memberId}")

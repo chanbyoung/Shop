@@ -29,6 +29,30 @@
         <label for="address" th:text="#{label.member.address}">주소</label>
         <input type="text" id="address" name="address" class="form-control" value="10000" th:value="${member.address.getFullAddress()}" readonly>
     </div>
+    <table th:if="${my}" class="table table-striped">
+        주문 내역
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>대표상품 이름</th>
+            <th>대표상품 주문가격</th>
+            <th>대표상품 주문수량</th>
+            <th>상태</th>
+            <th>일시</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${member.orderList}">
+            <td><a th:href="@{/orders/{orderId}(orderId=${order.id})}" th:text="${order.id}"></a></td>
+            <td th:text="${order.orderItems[0].item.name}"></td>
+            <td th:text="${order.orderItems[0].orderPrice}"></td>
+            <td th:text="${order.orderItems[0].count}"></td>
+            <td th:text="${order.status}"></td>
+            <td th:text="${order.localDateTime}"></td>
+        </tr>
+        </tbody>
+    </table>
     <div><button class="w-100 btn btn-secondary btn-lg" th:onclick="|location.href='@{/members/{memberId}/edit(memberId=${member.id})}'|"type="button">회원수정</button></div>
     <div><button class="w-100 btn btn-secondary btn-lg" id="delete-button" type="button" th:attr="data-memberId=${member.id}">회원탈퇴</button></div>
     <div th:replace="~{fragments/footer :: footer}" />
