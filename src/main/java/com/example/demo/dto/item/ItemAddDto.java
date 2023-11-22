@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -12,7 +15,6 @@ import lombok.ToString;
 
 public class ItemAddDto {
     private Long categoryId;
-
     @NotEmpty
     private String name;
     @NotNull
@@ -21,6 +23,8 @@ public class ItemAddDto {
     private Long stockQuantity;
     @NotEmpty
     private String selectedOption;
+
+    private List<MultipartFile> imageFiles;
 
     private String artist;
     private String etc;

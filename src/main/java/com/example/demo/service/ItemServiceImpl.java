@@ -12,10 +12,7 @@ import com.example.demo.dto.item.ItemGetDto;
 import com.example.demo.dto.item.ItemUpdateDto;
 import com.example.demo.dto.item.ItemsGetDto;
 import com.example.demo.dto.member.MemberGetDto;
-import com.example.demo.reopsitory.CategoryRepository;
-import com.example.demo.reopsitory.DslItemRepository;
-import com.example.demo.reopsitory.ItemRepository;
-import com.example.demo.reopsitory.MemberRepository;
+import com.example.demo.reopsitory.*;
 import com.example.demo.web.CategoryAddDto;
 import com.example.demo.web.ItemSearch;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +22,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -38,9 +37,10 @@ public class ItemServiceImpl implements ItemService {
     private final DslItemRepository dslItemRepository;
     private final MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
+    private final FileStore fileStore;
     @Override
     @Transactional
-    public void saveItem(ItemAddDto item, String username) {
+    public void saveItem(ItemAddDto item, String username) throws IOException {
         Category category = categoryRepository.findById(item.getCategoryId()).get();
         Optional<Member> findMember = memberRepository.findByLoginId(username);
         Item saveItem = null;
@@ -52,6 +52,7 @@ public class ItemServiceImpl implements ItemService {
                             .price(item.getPrice())
                             .stockQuantity(item.getStockQuantity())
                             .selectedOption("book")
+                            .imageFiles(fileStore.storeFiles(item.getImageFiles()))
                             .author(item.getAuthor())
                             .isbn(item.getIsbn())
                             .member(findMember.get())
@@ -111,9 +112,9 @@ public class ItemServiceImpl implements ItemService {
                 .name(item.getName())
                 .price(item.getPrice())
                 .stockQuantity(item.getStockQuantity())
+                .imageFiles(item.getImageFiles())
                 .build();
     }
-
     @Override
     public ItemGetDto getItem(Long itemId) {
         Optional<Item> item = itemRepository.findById(itemId);

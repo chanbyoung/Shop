@@ -35,6 +35,9 @@ public abstract class Item {
     private Member member;
     @OneToMany(mappedBy = "item",cascade = CascadeType.ALL)
     private List<CategoryItem> categoryItems;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private List<UploadFile> imageFiles;
+
     @NotNull
     private Long price;
     @NotNull

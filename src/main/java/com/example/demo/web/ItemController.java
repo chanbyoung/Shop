@@ -22,6 +22,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -59,7 +60,7 @@ public class ItemController {
     }
 
     @PostMapping("/new")
-    public String addItem(@Validated @ModelAttribute(name = "item") ItemAddDto itemAddDto, BindingResult bindingResult, Authentication authentication) {
+    public String addItem(@Validated @ModelAttribute(name = "item") ItemAddDto itemAddDto, BindingResult bindingResult, Authentication authentication) throws IOException {
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
             return "items/addItemForm";

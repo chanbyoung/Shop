@@ -11,10 +11,11 @@ import com.example.demo.web.ItemSearch;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ItemService {
-     void saveItem(ItemAddDto item,String username);
+     void saveItem(ItemAddDto item,String username) throws IOException;
      void updateItem(Long itemId, ItemUpdateDto itemUpdateDto);
 
     Page<ItemsGetDto> getItems(Pageable pageable, ItemSearch itemSearch);

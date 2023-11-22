@@ -18,7 +18,7 @@
 <div class="container">
     <div th:replace="~{fragments/bodyHeader :: bodyHeader}" />
 
-    <form th:action="@{/items/new}" th:object="${item}" method="post">
+    <form th:action="@{/items/new}" enctype="multipart/form-data" th:object="${item}" method="post">
         <select id="category" name="categoryId">
             <label for="category">카테고리</label>
             <option value="">카테고리 선택</option>
@@ -28,6 +28,7 @@
             <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요" th:errorclass="field-error">
             <div class="field-error" th:errors="*{name}" />
         </div>
+        이미지 파일들<input type="file"multiple="multiple" name="imageFiles" >
         <div class="form-group">
             <label for="price">가격</label>
             <input type="number" id="price" th:field="*{price}" class="form-control" placeholder="가격을 입력하세요" th:errorclass="field-error">
