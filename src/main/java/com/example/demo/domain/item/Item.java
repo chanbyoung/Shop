@@ -72,4 +72,9 @@ public abstract class Item {
     public void addStock(int count) {
         this.stockQuantity += count;
     }
+
+
+    public void addImageFile(List<UploadFile> uploadFiles) {
+        this.imageFiles = uploadFiles;
+    }
 }

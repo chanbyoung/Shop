@@ -1,5 +1,6 @@
 package com.example.demo.reopsitory;
 
+import com.example.demo.domain.item.Item;
 import com.example.demo.domain.item.UploadFile;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,26 +17,27 @@ public class FileStore {
     @Value("${file.dir}")
     private String fileDir;
 
-    public String getFillPath(String filename) {
+    public String getFullPath(String filename) {
         return fileDir+filename;
     }
 
-    public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles) throws IOException {
+    public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles, Item item) throws IOException {
         List<UploadFile> storeFileResult= new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
             if (!multipartFile.isEmpty()) {
-                storeFileResult.add(storeFile(multipartFile));
+                storeFileResult.add(storeFile(multipartFile,item));
             }
         }
         return storeFileResult;
     }
 
-    public UploadFile storeFile(MultipartFile multipartFile) throws IOException {
+    public UploadFile storeFile(MultipartFile multipartFile,Item item) throws IOException {
         if(multipartFile.isEmpty()) return null;
         String originalFileName= multipartFile.getOriginalFilename();
         String storeFileName = createStoreFileName(originalFileName);
-        multipartFile.transferTo(new File(getFillPath(storeFileName)));
+        multipartFile.transferTo(new File(getFullPath(storeFileName)));
         return UploadFile.builder().
+                item(item).
                 uploadFileName(originalFileName)
                 .storeFileName(storeFileName)
                 .build();

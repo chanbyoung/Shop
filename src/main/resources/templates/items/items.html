@@ -31,7 +31,13 @@
             </thead>
             <tbody>
             <tr th:each="item : ${items}">
-                <td><img th:each="imageFile : ${item.imageFiles}" th:src="|/images/${imageFile.getStoreFileName()}|" width="300" height="300"/></td>
+                <td>
+                    <img th:each="imageFile : ${item.imageFiles}"
+                         th:src="@{|items/images/${imageFile.getStoreFileName()}|}"
+                         width="300"
+                         height="300"
+                         alt="상품 이미지"/>
+                </td>
                 <td><a href="item.html" th:href="@{items/{itemId}(itemId=${item.id})}" th:text="${item.name}">상품상세</a></td>
                 <td th:text="${item.price}"></td>
                 <td th:text="${item.stockQuantity}"></td>

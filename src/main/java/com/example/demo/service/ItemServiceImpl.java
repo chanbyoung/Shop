@@ -52,7 +52,6 @@ public class ItemServiceImpl implements ItemService {
                             .price(item.getPrice())
                             .stockQuantity(item.getStockQuantity())
                             .selectedOption("book")
-                            .imageFiles(fileStore.storeFiles(item.getImageFiles()))
                             .author(item.getAuthor())
                             .isbn(item.getIsbn())
                             .member(findMember.get())
@@ -83,6 +82,9 @@ public class ItemServiceImpl implements ItemService {
                             .build();
                     saveItem =itemRepository.save(movie);
                 }
+            }
+            if (!item.getImageFiles().isEmpty()) {
+                saveItem.addImageFile(fileStore.storeFiles(item.getImageFiles(),saveItem));
             }
             CategoryItem categoryItem = CategoryItem.builder()
                     .category(category)
