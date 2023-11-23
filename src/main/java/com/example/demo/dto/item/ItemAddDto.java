@@ -14,6 +14,7 @@ import java.util.List;
 @ToString
 
 public class ItemAddDto {
+    @NotNull(message = "카테고리를 선택해야 됩니다.")
     private Long categoryId;
     @NotEmpty
     private String name;

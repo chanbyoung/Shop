@@ -66,8 +66,9 @@ public class ItemController {
     }
 
     @PostMapping("/new")
-    public String addItem(@Validated @ModelAttribute(name = "item") ItemAddDto itemAddDto, BindingResult bindingResult, Authentication authentication) throws IOException {
+    public String addItem(@Validated @ModelAttribute(name = "item") ItemAddDto itemAddDto, BindingResult bindingResult,Model model, Authentication authentication) throws IOException {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("categories",itemService.getCategories());
             log.info("errors={}", bindingResult);
             return "items/addItemForm";
         }
