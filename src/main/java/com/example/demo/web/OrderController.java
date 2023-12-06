@@ -1,10 +1,12 @@
 package com.example.demo.web;
 
 import com.example.demo.domain.Order;
+import com.example.demo.domain.item.Item;
 import com.example.demo.dto.item.ItemsGetDto;
 import com.example.demo.dto.order.OrderDto;
 import com.example.demo.dto.order.OrderGetDto;
 import com.example.demo.exception.NotEnoughStockException;
+import com.example.demo.reopsitory.ItemRepository;
 import com.example.demo.service.ItemService;
 import com.example.demo.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -20,17 +22,19 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping
 @Slf4j
 public class OrderController {
     private final OrderService orderService;
-    private final ItemService itemService;
+    private final ItemRepository itemRepository;
 
     @GetMapping("/order")
     public String addOrder(Model model, @PageableDefault(size = 5) Pageable pageable) {
-        Page<ItemsGetDto> items = itemService.getItems(pageable, new ItemSearch());
+        List<Item> items = itemRepository.findAll();
         model.addAttribute("items", items);
         return "orders/add";
     }
