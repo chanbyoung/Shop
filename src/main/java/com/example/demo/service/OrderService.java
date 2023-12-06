@@ -47,7 +47,7 @@ public class OrderService {
         //주문 상품 생성
         OrderItem orderItem = OrderItem.builder()
                 .item(findItem)
-                .orderPrice(findItem.getPrice())
+                .orderPrice(findItem.getPrice()*orderDto.getCount())
                 .count(orderDto.getCount())
                 .build();
         log.info("orderItem={}",orderItem);
