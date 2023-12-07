@@ -5,6 +5,7 @@ import com.example.demo.domain.item.Book;
 import com.example.demo.domain.item.Item;
 import com.example.demo.dto.order.OrderDto;
 import com.example.demo.dto.order.OrderGetDto;
+import com.example.demo.dto.order.OrderItemDto;
 import com.example.demo.reopsitory.DslOrderRepository;
 import com.example.demo.reopsitory.ItemRepository;
 import com.example.demo.reopsitory.MemberRepository;
@@ -54,9 +55,11 @@ class OrderServiceTest {
                 .price(1000L)
                 .stockQuantity(100L)
                 .build();
+        OrderItemDto orderItemDto = new OrderItemDto();
+        orderItemDto.setItemId(item.getId());
+        orderItemDto.setQuantity(10);
         OrderDto orderDto = new OrderDto();
-        orderDto.setCount(10);
-        orderDto.setItemId(item.getId());
+        orderDto.setOrderItems(List.of(orderItemDto));
         when(memberRepository.findByLoginId(member.getLoginId())).thenReturn(Optional.of(member));
         when(itemRepository.findById(item.getId())).thenReturn(Optional.of(item));
         //when
