@@ -8,6 +8,7 @@ import com.example.demo.domain.item.Item;
 import com.example.demo.dto.order.GetOrderItem;
 import com.example.demo.dto.order.OrderDto;
 import com.example.demo.dto.order.OrderGetDto;
+import com.example.demo.dto.order.OrderItemDto;
 import com.example.demo.reopsitory.DslOrderRepository;
 import com.example.demo.reopsitory.ItemRepository;
 import com.example.demo.reopsitory.MemberRepository;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,29 +38,44 @@ public class OrderService {
     private final MemberRepository memberRepository;
     @Transactional
     public Long order(String loginId, OrderDto orderDto) {
-        Optional<Member> member = memberRepository.findByLoginId(loginId);
-        Optional<Item> item = itemRepository.findById(orderDto.getItemId());
+        Optional<Member> memberOptional = memberRepository.findByLoginId(loginId);
 
-        Member findMember = member.get();
-        Item findItem = item.get();
+        if (memberOptional.isEmpty()) {
+            // 멤버를 찾을 수 없는 경우에 대한 처리
+            // 예외 던지거나, 에러 메시지를 반환하거나, 다른 방식으로 처리해주세요.
+            // 여기서는 간단하게 NullPointerException 예외를 던지도록 했습니다.
+            throw new NullPointerException("해당 멤버를 찾을 수 없습니다.");
+        }
 
-        //배송 정보 생성
-        Delivery delivery = new Delivery(findMember.getAddress());
-        //주문 상품 생성
-        OrderItem orderItem = OrderItem.builder()
-                .item(findItem)
-                .orderPrice(findItem.getPrice()*orderDto.getCount())
-                .count(orderDto.getCount())
-                .build();
-        log.info("orderItem={}",orderItem);
-        //제고 수량 삭제
-        findItem.removeStock(orderDto.getCount());
+        Member member = memberOptional.get();
+        List<OrderItemDto> orderItems = orderDto.getOrderItems();
+        Delivery delivery = new Delivery(member.getAddress());
 
-        //주문 생성
-        Order order = Order.createOrder(member.get(), delivery, orderItem);
+        List<OrderItem> createdOrderItems = new ArrayList<>(); // 생성된 OrderItem들을 모아둘 리스트
+
+        for (OrderItemDto orderItemDto : orderItems) {
+            Item findItem = itemRepository.findById(orderItemDto.getItemId())
+                    .orElseThrow(() -> new IllegalArgumentException("주문하려는 상품을 찾을 수 없습니다."));
+
+            OrderItem orderItem = OrderItem.builder()
+                    .item(findItem)
+                    .orderPrice(findItem.getPrice() * orderItemDto.getQuantity())
+                    .count(orderItemDto.getQuantity())
+                    .build();
+
+            createdOrderItems.add(orderItem); // 생성된 OrderItem을 리스트에 추가
+
+            findItem.removeStock(orderItemDto.getQuantity()); // 재고 수량 조절
+        }
+
+        // 주문 생성 시 Order에 생성된 OrderItem 리스트를 전달해줍니다.
+        OrderItem[] orderItemsArray = createdOrderItems.toArray(OrderItem[]::new);
+        Order order = Order.createOrder(member, delivery, orderItemsArray);
         orderRepository.save(order);
+
         return order.getId();
     }
+
 
     public OrderGetDto getOrder(Long id) {
         Optional<Order> order = orderRepository.findById(id);

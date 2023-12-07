@@ -3,11 +3,9 @@ package com.example.demo.dto.order;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
-public class OrderDto {
-  private List<OrderItemDto> orderItems;
-
+public class OrderItemDto {
+    private Long itemId;
+    private int quantity;
 }
