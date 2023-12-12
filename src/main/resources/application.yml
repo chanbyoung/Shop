@@ -1,12 +1,7 @@
 spring:
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/shop
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
   profiles:
     active: local
-    include: mail
+    include: mail, my
   jpa:
     hibernate:
 #      ddl-auto: create
