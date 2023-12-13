@@ -25,7 +25,8 @@
             <option value="">카테고리 선택</option>
             <option th:each="category : ${categories}"  th:value="${category.id}" th:text="${category.name}" th:errorclass="field-error" th:field="*{categoryId}"></option>
         </select>
-        <div class="field-error" th:errors="*{categoryId}" />
+            <a th:href="@{/items/category/add}" class="btn-add-category">Add Category</a>
+            <div class="field-error" th:errors="*{categoryId}" />
         </div>
         <div class="form-group">
             <label for="name">상품명</label>
