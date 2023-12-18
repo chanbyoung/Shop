@@ -23,7 +23,7 @@
             <label th:for="'item-' + ${index}" th:text="'상품명 ' + (${index} + 1)"></label>
             <select th:name="'orderItems[' + ${index} + '].itemId'" th:id="'item-' + ${index}" class="form-control">
                 <option value="">상품선택</option>
-                <option th:each="item : ${items}" th:value="${item.id}" th:text="${item.name}"></option>
+                <option th:each="item : ${items}" th:value="${item.id}" th:text="${item.name + ' - 재고수량: ' + item.stockQuantity}"></option>
             </select>
         </div>
 
